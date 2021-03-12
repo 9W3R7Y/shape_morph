@@ -1,6 +1,8 @@
+
+
 blender = vision.AlphaBlender('Operation','Binary mask','MaskSource','Input port');
 
-obj = imgs{1};
+obj = objs{1};
 img = im2single(obj{2});
 mask = im2single(obj{3});
 vert = obj{5};
@@ -28,8 +30,9 @@ for i = 1:mesh_num-1
     layer_mask = layer_mask+mesh_mask;
 end
 
+image(imread('imgs\check.png'));
+hold on
 image(layer_img,AlphaData=layer_mask);
-hold on;
 pbaspect([1 1 1]);
 for i = 1:mesh_num
     idxs = meshes(i,:);
