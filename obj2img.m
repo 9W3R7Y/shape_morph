@@ -1,10 +1,11 @@
-function [layer_img,layer_mask] = obj2img(obj,shape)
+function [layer_img,layer_mask] = obj2img(obj,morph)
     blender = vision.AlphaBlender('Operation','Binary mask','MaskSource','Input port');
     
     img = im2single(obj{2});
     mask = im2single(obj{3});
-    vert = obj{5};
+    mesh_points = obj{5};
     meshes = obj{6};
+    shape_points = obj{7};
 
     [W,H,~] = size(img);
     layer_img = single(ones(size(img))).*0.5;
@@ -14,10 +15,13 @@ function [layer_img,layer_mask] = obj2img(obj,shape)
 
     for i = 1:mesh_num
         idxs = meshes(i,:);
-        mesh = vert(idxs,:);
-        mesh_mask = mask.*poly2mask(mesh(:,1),mesh(:,2), W, H);
+        mesh_verts = mesh_points(idxs,:);
+        shape_verts = shape_points(idxs,:);
+        
+        mesh_mask = mask.*poly2mask(mesh_verts(:,1),mesh_verts(:,2), W, H);
 
-        T = transCoeff(mesh,mesh);
+        morph_verts = shape_verts.*morph+mesh_verts.*(1-morph);
+        T = transCoeff(mesh_verts,morph_verts);
         tform = affine2d(T);
         outView = affineOutputView([W,H],tform,'BoundsStyle','sameAsInput');
 
