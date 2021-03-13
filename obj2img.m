@@ -1,11 +1,11 @@
 function [layer_img,layer_mask,morph_points] = obj2img(obj,morph)
     blender = vision.AlphaBlender('Operation','Binary mask','MaskSource','Input port');
     
-    img = im2single(obj{2});
-    mask = im2single(obj{3});
-    mesh_points = obj{5};
-    meshes = obj{6};
-    shape_points = obj{7};
+    img = im2single(obj.img);
+    mask = im2single(obj.mask);
+    mesh_points = obj.mesh_points;
+    meshes = obj.meshes;
+    shape_points = obj.shape_points;
     morph_points = shape_points.*morph+mesh_points.*(1-morph);
 
     [W,H,~] = size(img);
