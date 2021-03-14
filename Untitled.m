@@ -7,6 +7,7 @@ addlistener(a,'MovingROI',@(src,evt) myCallback(evt));
 addlistener(b,'MovingROI',@(src,evt) myCallback(evt));
 addlistener(c,'MovingROI',@(src,evt) myCallback(evt));
 
+
 function myCallback(evt)
     title(mat2str(evt.CurrentPosition,3));
 end
