@@ -15,8 +15,8 @@ function [layer_img,layer_mask,morph_points] = obj2img(obj,morph,use_GPU)
     shape_points = obj.shape_points;
     morph_points = shape_points.*morph+mesh_points.*(1-morph);
 
-    [W,H,~] = size(img);
-    layer_img = single(ones(size(img))).*0.5;
+    [W,H,Ch] = size(img);
+    layer_img = single(zeros([W,H,Ch]));
     layer_mask = single(zeros([W,H]));
 
     [mesh_num,~] = size(meshes);
