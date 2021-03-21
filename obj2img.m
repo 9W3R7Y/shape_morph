@@ -1,4 +1,4 @@
-function [layer_img,layer_mask,morph_points] = obj2img(obj,morph,use_GPU)
+function [layer_img,layer_mask,morph_points] = obj2img(obj,use_GPU)
     if ~exist('use_GPU','var'), use_GPU = false; end
     blender = vision.AlphaBlender('Operation','Binary mask','MaskSource','Input port');
     
@@ -13,7 +13,7 @@ function [layer_img,layer_mask,morph_points] = obj2img(obj,morph,use_GPU)
     mesh_points = obj.mesh_points;
     meshes = obj.meshes;
     shape_points = obj.shape_points;
-    morph_points = shape_points.*morph+mesh_points.*(1-morph);
+    morph_points = shape_points.*obj.param_value+mesh_points.*(1-obj.param_value);
 
     [W,H,Ch] = size(img);
     layer_img = single(zeros([W,H,Ch]));
